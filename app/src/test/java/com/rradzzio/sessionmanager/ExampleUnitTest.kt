@@ -1,4 +1,4 @@
-package com.hackheroes.sessionmanager
+package com.rradzzio.sessionmanager
 
 import org.junit.Test
 

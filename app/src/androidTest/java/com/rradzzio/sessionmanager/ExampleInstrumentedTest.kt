@@ -1,4 +1,4 @@
-package com.hackheroes.sessionmanager
+package com.rradzzio.sessionmanager
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

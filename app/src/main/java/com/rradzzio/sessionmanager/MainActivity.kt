@@ -1,4 +1,4 @@
-package com.hackheroes.sessionmanager
+package com.rradzzio.sessionmanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
