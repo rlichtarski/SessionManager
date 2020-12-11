@@ -10,10 +10,10 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
-    tools:context="com.rradzzio.sessionmanager.ui.auth.LoginFragment">
+    tools:context="com.rradzzio.sessionmanager.ui.auth.RegisterFragment">
 
     <EditText
-        android:id="@+id/username_login"
+        android:id="@+id/username_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -27,23 +27,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/password_login"
+        android:id="@+id/password_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:hint="@string/prompt_password_login"
+        android:hint="@string/prompt_password_register"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_login" />
+        app:layout_constraintTop_toBottomOf="@+id/username_register" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,15 +52,15 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
-        android:text="@string/action_sign_in"
+        android:text="@string/action_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_login"
+        app:layout_constraintTop_toBottomOf="@+id/password_register"
         app:layout_constraintVertical_bias="0.2" />
 
     <TextView
-        android:id="@+id/login_text"
+        android:id="@+id/register_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -69,11 +69,11 @@
         android:layout_marginBottom="64dp"
         android:textSize="25sp"
         android:textColor="#000"
-        android:text="@string/action_sign_in"
+        android:text="@string/action_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintTop_toBottomOf="@+id/register"
         app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
