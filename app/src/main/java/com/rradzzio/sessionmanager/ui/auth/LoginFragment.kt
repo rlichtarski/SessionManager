@@ -1,4 +1,4 @@
-package com.rradzzio.sessionmanager.ui.auth.ui.login
+package com.rradzzio.sessionmanager.ui.auth
 
 import android.os.Bundle
 import android.view.View

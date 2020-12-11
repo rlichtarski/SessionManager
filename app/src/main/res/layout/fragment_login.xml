@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
-    tools:context="com.rradzzio.sessionmanager.ui.auth.ui.login.LoginFragment">
+    tools:context="com.rradzzio.sessionmanager.ui.auth.LoginFragment">
 
     <EditText
         android:id="@+id/username"
