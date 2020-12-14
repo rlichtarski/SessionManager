@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/launcherFragment"
-        android:name="com.rradzzio.sessionmanager.ui.auth.LauncherFragment"
+        android:name="com.rradzzio.sessionmanager.presentation.ui.auth.LauncherFragment"
         android:label="fragment_launcher"
         tools:layout="@layout/fragment_launcher" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.rradzzio.sessionmanager.ui.auth.LoginFragment"
+        android:name="com.rradzzio.sessionmanager.presentation.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.rradzzio.sessionmanager.ui.auth.RegisterFragment"
+        android:name="com.rradzzio.sessionmanager.presentation.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
