@@ -7,7 +7,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.rradzzio.sessionmanager.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity(), NavController.OnDestinationChangedListener{
 
     private lateinit var navController: NavController
