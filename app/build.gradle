@@ -67,6 +67,15 @@ dependencies {
     // LiveData Coroutines
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
+    def retrofit = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+
+    /*Moshi*/
+    def moshiVersion = "1.10.0"
+    implementation("com.squareup.moshi:moshi:$moshiVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
     // Room
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
