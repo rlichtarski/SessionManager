@@ -26,9 +26,6 @@ class LoginFragment : BaseAuthFragment(R.layout.fragment_login) {
 
     private lateinit var binding: FragmentLoginBinding
 
-    @Inject
-    lateinit var authService: AuthService
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
@@ -41,10 +38,6 @@ class LoginFragment : BaseAuthFragment(R.layout.fragment_login) {
                 binding.usernameLogin.text.toString(),
                 binding.passwordLogin.text.toString()
             )
-
-            Timber.d("EMAIL: ${binding.usernameLogin.text}")
-            Timber.d("PASSWORD: ${binding.passwordLogin.text}")
-
         }
 
         subscribeObservers()
