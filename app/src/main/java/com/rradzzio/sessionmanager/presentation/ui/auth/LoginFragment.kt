@@ -57,23 +57,25 @@ class LoginFragment : BaseAuthFragment(R.layout.fragment_login) {
             }
         })
 
-        authViewModel.loginResult.observe(viewLifecycleOwner, { result ->
-            result?.let {
-                when(result.status) {
+        authViewModel.loginResult.observe(viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                result.let {
+                    when(result.status) {
 
-                    Status.LOADING -> {
-                        Timber.d("loading...")
+                        Status.LOADING -> {
+                            Timber.d("loading...")
+                        }
+
+                        Status.SUCCESS -> {
+                            Timber.d("auth token: ${result.data!!.token}")
+                        }
+
+                        Status.ERROR -> {
+                            Timber.e("error...")
+                            Timber.e(result.message)
+                        }
+
                     }
-
-                    Status.SUCCESS -> {
-                        Timber.d("auth token: ${result.data!!.token}")
-                    }
-
-                    Status.ERROR -> {
-                        Timber.e("error...")
-                        Timber.e(result.message)
-                    }
-
                 }
             }
 

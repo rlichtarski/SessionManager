@@ -8,6 +8,7 @@ import com.rradzzio.sessionmanager.domain.models.AuthToken
 import com.rradzzio.sessionmanager.domain.models.LoginCredentials
 import com.rradzzio.sessionmanager.domain.models.RegistrationCredentials
 import com.rradzzio.sessionmanager.repository.AuthRepository
+import com.rradzzio.sessionmanager.util.Event
 import com.rradzzio.sessionmanager.util.Resource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -27,21 +28,21 @@ class AuthViewModel @ViewModelInject constructor(
     val registrationCredentials: LiveData<RegistrationCredentials>
         get() = _registrationCredentials
 
-    private val _loginResult = MutableLiveData<Resource<AuthToken>>()
+    private val _loginResult = MutableLiveData<Event<Resource<AuthToken>>>()
 
-    val loginResult: LiveData<Resource<AuthToken>>
+    val loginResult: LiveData<Event<Resource<AuthToken>>>
         get() = _loginResult
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            _loginResult.postValue(Resource.loading(null))
+            _loginResult.postValue(Event(Resource.loading(null)))
             authRepository.login(
                 AuthLoginRequest(
                     email = email,
                     password = password
                 )
             ).collect {
-                _loginResult.postValue(it)
+                _loginResult.postValue(Event(it))
             }
         }
 
