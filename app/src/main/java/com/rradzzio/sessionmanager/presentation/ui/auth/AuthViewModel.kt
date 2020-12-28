@@ -34,6 +34,7 @@ class AuthViewModel @ViewModelInject constructor(
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
+            _loginResult.postValue(Resource.loading(null))
             authRepository.login(
                 AuthLoginRequest(
                     email = email,
