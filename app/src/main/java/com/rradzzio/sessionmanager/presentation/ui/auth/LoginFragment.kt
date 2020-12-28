@@ -13,6 +13,7 @@ import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDto
 import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.databinding.FragmentLoginBinding
 import com.rradzzio.sessionmanager.domain.models.LoginCredentials
+import com.rradzzio.sessionmanager.util.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -56,8 +57,26 @@ class LoginFragment : BaseAuthFragment(R.layout.fragment_login) {
             }
         })
 
-        authViewModel.loginResult.observe(viewLifecycleOwner, { authToken ->
-            Timber.d("AUTH TOKEN: ${authToken.token}")
+        authViewModel.loginResult.observe(viewLifecycleOwner, { result ->
+            result?.let {
+                when(result.status) {
+
+                    Status.LOADING -> {
+                        Timber.d("loading...")
+                    }
+
+                    Status.SUCCESS -> {
+                        Timber.d("auth token: ${result.data!!.token}")
+                    }
+
+                    Status.ERROR -> {
+                        Timber.e("error...")
+                        Timber.e(result.message)
+                    }
+
+                }
+            }
+
         })
     }
 

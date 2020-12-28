@@ -7,6 +7,7 @@ import com.rradzzio.sessionmanager.domain.models.LoginCredentials
 import com.rradzzio.sessionmanager.domain.models.RegistrationCredentials
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class AuthTokenRemoteSourceImpl @Inject constructor(
     private val authServiceApi: AuthService
 ) : AuthTokenRemoteSource {
 
-    override suspend fun loginAuthToken(authLoginRequest: AuthLoginRequest): Flow<AuthTokenDto> =
+    override suspend fun loginAuthToken(authLoginRequest: AuthLoginRequest): Flow<Response<AuthTokenDto>> =
         flow {
             val result = authServiceApi.login(authLoginRequest)
             Timber.d("loginAuthToken impl: ${result.code()}")
@@ -23,11 +24,7 @@ class AuthTokenRemoteSourceImpl @Inject constructor(
             Timber.d("loginAuthToken impl: ${result.raw()}")
             Timber.d("loginAuthToken impl: ${result.isSuccessful}")
             Timber.d("loginAuthToken impl: ${result.errorBody()}")
-            result.body()?.let {
-                emit(
-                    result.body()!!
-                )
-            }
+            emit(result)
         }
 
     override suspend fun registerAuthToken(authRegistrationRequest: AuthRegistrationRequest): Flow<AuthTokenDto> {

@@ -7,13 +7,15 @@ class AuthTokenDtoMapper : DomainMapper<AuthTokenDto, AuthToken> {
 
     override fun mapToDomainModel(model: AuthTokenDto): AuthToken {
         return AuthToken(
-            token = model.token
+            token = model.token,
+            error = model.error
         )
     }
 
     override fun mapFromDomainModel(domainModel: AuthToken): AuthTokenDto {
         return AuthTokenDto(
-            token = domainModel.token
+            token = domainModel.token,
+            error = domainModel.error
         )
     }
 

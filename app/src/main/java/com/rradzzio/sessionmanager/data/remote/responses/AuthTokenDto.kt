@@ -5,6 +5,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class AuthTokenDto(
+
     @Json(name = "token")
-    val token: String? = null
+    val token: String? = null,
+
+    @Json(name = "error")
+    val error: String? = null
 )
