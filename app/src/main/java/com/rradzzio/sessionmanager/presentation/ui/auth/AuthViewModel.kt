@@ -1,22 +1,24 @@
 package com.rradzzio.sessionmanager.presentation.ui.auth
 
+import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.rradzzio.sessionmanager.R
 import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
-import com.rradzzio.sessionmanager.domain.models.AuthToken
-import com.rradzzio.sessionmanager.domain.models.LoginCredentials
-import com.rradzzio.sessionmanager.domain.models.RegistrationCredentials
+import com.rradzzio.sessionmanager.domain.models.*
 import com.rradzzio.sessionmanager.repository.AuthRepository
 import com.rradzzio.sessionmanager.util.Event
 import com.rradzzio.sessionmanager.util.Resource
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AuthViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context,
     private val authRepository: AuthRepository
-) : ViewModel(){
+) : ViewModel() {
 
     private val _loginCredentials = MutableLiveData<LoginCredentials>()
 
@@ -57,15 +59,41 @@ class AuthViewModel @ViewModelInject constructor(
     }
 
     fun isValidForLogin(loginEmail: String?, loginPassword: String?): Boolean {
-        if(loginEmail.isNullOrEmpty()
+        if (loginEmail.isNullOrEmpty()
             || loginEmail.isNullOrBlank()
             || loginPassword.isNullOrEmpty()
             || loginPassword.isNullOrBlank()
-            ) {
+        ) {
+            postErrorLoginValue(
+                context.getString(R.string.empty_email_or_password)
+            )
             return false
         }
 
-        return loginPassword.length > 5
+        if(loginPassword.length < 5) {
+            postErrorLoginValue(
+                context.getString(R.string.invalid_password)
+            )
+            return false
+        }
+
+        return true
+    }
+
+    private fun postErrorLoginValue(errorMessage: String) {
+        _loginResult.postValue(
+            Event(
+                Resource.error(
+                    errorMessage,
+                    AuthToken(
+                        errorResponse = StateResponse(
+                            message = errorMessage,
+                            errorResponseType = ResponseType.Dialog
+                        )
+                    )
+                )
+            )
+        )
     }
 
 }
