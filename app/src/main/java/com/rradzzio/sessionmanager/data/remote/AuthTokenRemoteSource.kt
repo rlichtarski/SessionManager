@@ -10,5 +10,5 @@ interface AuthTokenRemoteSource {
 
     suspend fun loginAuthToken(authLoginRequest: AuthLoginRequest): Flow<Response<AuthTokenDto>>
 
-    suspend fun registerAuthToken(authRegistrationRequest: AuthRegistrationRequest): Flow<AuthTokenDto>
+    suspend fun registerAuthToken(authRegistrationRequest: AuthRegistrationRequest): Flow<Response<AuthTokenDto>>
 }

@@ -25,8 +25,16 @@ class AuthTokenRemoteSourceImpl @Inject constructor(
             emit(result)
         }
 
-    override suspend fun registerAuthToken(authRegistrationRequest: AuthRegistrationRequest): Flow<AuthTokenDto> {
-        TODO()
-    }
+    override suspend fun registerAuthToken(authRegistrationRequest: AuthRegistrationRequest): Flow<Response<AuthTokenDto>> =
+        flow {
+            val result = authServiceApi.register(authRegistrationRequest)
+            Timber.d("loginAuthToken impl: ${result.code()}")
+            Timber.d("loginAuthToken impl: ${result.message()}")
+            Timber.d("loginAuthToken impl: ${result.body()}")
+            Timber.d("loginAuthToken impl: ${result.raw()}")
+            Timber.d("loginAuthToken impl: ${result.isSuccessful}")
+            Timber.d("loginAuthToken impl: ${result.errorBody()}")
+            emit(result)
+        }
 
 }

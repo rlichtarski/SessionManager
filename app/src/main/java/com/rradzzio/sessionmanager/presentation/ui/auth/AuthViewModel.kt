@@ -6,6 +6,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.rradzzio.sessionmanager.R
 import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
+import com.rradzzio.sessionmanager.data.remote.requests.AuthRegistrationRequest
 import com.rradzzio.sessionmanager.domain.models.*
 import com.rradzzio.sessionmanager.repository.AuthRepository
 import com.rradzzio.sessionmanager.util.Event
@@ -50,6 +51,21 @@ class AuthViewModel @ViewModelInject constructor(
 
     }
 
+    fun register(email: String, password: String) {
+        viewModelScope.launch {
+            _loginResult.postValue(Event(Resource.loading(null)))
+            authRepository.register(
+                AuthRegistrationRequest(
+                    email = email,
+                    password = password
+                )
+            ).collect {
+                _loginResult.postValue(Event(it))
+            }
+        }
+
+    }
+
     fun setLoginFields(email: String?, password: String?) {
         _loginCredentials.value = LoginCredentials(email = email, password = password)
     }
@@ -64,14 +80,14 @@ class AuthViewModel @ViewModelInject constructor(
             || loginPassword.isNullOrEmpty()
             || loginPassword.isNullOrBlank()
         ) {
-            postErrorLoginValue(
+            postErrorValue(
                 context.getString(R.string.empty_email_or_password)
             )
             return false
         }
 
         if(loginPassword.length < 5) {
-            postErrorLoginValue(
+            postErrorValue(
                 context.getString(R.string.invalid_password)
             )
             return false
@@ -80,7 +96,42 @@ class AuthViewModel @ViewModelInject constructor(
         return true
     }
 
-    private fun postErrorLoginValue(errorMessage: String) {
+    fun isValidForRegistration(
+        registrationEmail: String?,
+        registrationPassword: String?,
+        confirmRegistrationPassword: String?
+    ): Boolean {
+        if (registrationEmail.isNullOrEmpty()
+            || registrationEmail.isNullOrBlank()
+            || registrationPassword.isNullOrEmpty()
+            || registrationPassword.isNullOrBlank()
+            || confirmRegistrationPassword.isNullOrEmpty()
+            || confirmRegistrationPassword.isNullOrBlank()
+        ) {
+            postErrorValue(
+                context.getString(R.string.empty_email_or_password)
+            )
+            return false
+        }
+
+        if(registrationPassword.length < 5 || confirmRegistrationPassword.length < 5) {
+            postErrorValue(
+                context.getString(R.string.invalid_password)
+            )
+            return false
+        }
+
+        if(registrationPassword != confirmRegistrationPassword) {
+            postErrorValue(
+                context.getString(R.string.passwords_do_not_match)
+            )
+            return false
+        }
+        
+        return true
+    }
+
+    private fun postErrorValue(errorMessage: String) {
         _loginResult.postValue(
             Event(
                 Resource.error(

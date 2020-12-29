@@ -10,6 +10,6 @@ interface AuthRepository {
 
     suspend fun login(authLoginRequest: AuthLoginRequest) : Flow<Resource<AuthToken>>
 
-    suspend fun register(authRegistrationRequest: AuthRegistrationRequest) : Flow<AuthToken>
+    suspend fun register(authRegistrationRequest: AuthRegistrationRequest) : Flow<Resource<AuthToken>>
 
 }

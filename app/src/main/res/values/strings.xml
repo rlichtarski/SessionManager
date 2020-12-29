@@ -11,6 +11,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be at least 6 characters long</string>
     <string name="empty_email_or_password">Either email or password is empty</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="login_failed">"Login failed"</string>
     <string name="launcher">launcher</string>
     <string name="text_ok">OK</string>

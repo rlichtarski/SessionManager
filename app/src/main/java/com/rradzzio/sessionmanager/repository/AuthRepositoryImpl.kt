@@ -48,8 +48,32 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun register(authRegistrationRequest: AuthRegistrationRequest): Flow<AuthToken> {
-        TODO("Not yet implemented")
+    override suspend fun register(authRegistrationRequest: AuthRegistrationRequest): Flow<Resource<AuthToken>> {
+        return authTokenRemoteSource.registerAuthToken(authRegistrationRequest)
+            .map { response ->
+                if(response.isSuccessful && response.code() == 200) {
+                    response.body()?.let {
+                        Resource.success(
+                            authTokenDtoMapper.mapToDomainModel(
+                                it
+                            )
+                        )
+                    }?: returnUnknownError()
+                } else {
+                    response.errorBody()?.let { responseBody ->
+                        val errorMessage = JSONObject(responseBody.charStream().readText()).getString("error")
+                        Resource.error(
+                            errorMessage,
+                            AuthToken(
+                                errorResponse = StateResponse(
+                                    message = errorMessage,
+                                    errorResponseType = ResponseType.Dialog
+                                )
+                            )
+                        )
+                    }?: returnUnknownError()
+                }
+            }
     }
 
     private fun returnUnknownError(): Resource<AuthToken> {
