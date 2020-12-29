@@ -12,4 +12,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="launcher">launcher</string>
+    <string name="text_ok">OK</string>
+    <string name="text_error">Error</string>
+    <string name="text_success">Success</string>
 </resources>

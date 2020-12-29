@@ -4,24 +4,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.rradzzio.sessionmanager.R
-import com.rradzzio.sessionmanager.data.remote.AuthService
-import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDto
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.databinding.FragmentLoginBinding
 import com.rradzzio.sessionmanager.domain.models.LoginCredentials
-import com.rradzzio.sessionmanager.presentation.ui.UIStateListener
-import com.rradzzio.sessionmanager.util.Status
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseAuthFragment(R.layout.fragment_login) {

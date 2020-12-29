@@ -3,14 +3,17 @@ package com.rradzzio.sessionmanager.presentation.ui.auth
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.rradzzio.sessionmanager.R
 import com.rradzzio.sessionmanager.databinding.ActivityAuthBinding
+import com.rradzzio.sessionmanager.domain.models.ResponseType
+import com.rradzzio.sessionmanager.domain.models.StateResponse
 import com.rradzzio.sessionmanager.presentation.ui.BaseActivity
+import com.rradzzio.sessionmanager.presentation.ui.displayErrorDialog
+import com.rradzzio.sessionmanager.presentation.ui.displayToast
 import com.rradzzio.sessionmanager.util.Status
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -56,6 +59,11 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
                             displayProgressBar(false)
                             Timber.e("error...")
                             Timber.e(result.message)
+                            result.data?.let {
+                                it.errorResponse?.let { stateResponse ->
+                                    handleErrorResponse(stateResponse)
+                                }
+                            }
                         }
 
                     }
@@ -63,6 +71,30 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
             }
 
         })
+    }
+
+    private fun handleErrorResponse(response: StateResponse) {
+        when(response.errorResponseType) {
+
+            is ResponseType.Toast -> {
+                Timber.d("handleErrorResponse Toast type: ${response.message}")
+                response.message?.let {
+                    displayToast(it)
+                }
+            }
+
+            is ResponseType.Dialog -> {
+                Timber.d("handleErrorResponse Dialog type: ${response.message}")
+                response.message?.let {
+                    displayErrorDialog(it)
+                }
+            }
+
+            is ResponseType.None -> {
+                Timber.i("handleErrorResponse: ${response.message}")
+            }
+
+        }
     }
 
     override fun displayProgressBar(loading: Boolean) {

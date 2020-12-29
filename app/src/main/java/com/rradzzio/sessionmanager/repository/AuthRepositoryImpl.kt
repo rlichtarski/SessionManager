@@ -5,8 +5,9 @@ import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
 import com.rradzzio.sessionmanager.data.remote.requests.AuthRegistrationRequest
 import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.domain.models.AuthToken
+import com.rradzzio.sessionmanager.domain.models.ResponseType
+import com.rradzzio.sessionmanager.domain.models.StateResponse
 import com.rradzzio.sessionmanager.util.Resource
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.json.JSONObject
@@ -31,9 +32,15 @@ class AuthRepositoryImpl @Inject constructor(
                     }?: returnUnknownError()
                 } else {
                     response.errorBody()?.let { responseBody ->
+                        val errorMessage = JSONObject(responseBody.charStream().readText()).getString("error")
                         Resource.error(
-                            JSONObject(responseBody.charStream().readText()).getString("error"),
-                            null
+                            errorMessage,
+                            AuthToken(
+                                errorResponse = StateResponse(
+                                    message = errorMessage,
+                                    errorResponseType = ResponseType.Dialog
+                                )
+                            )
                         )
                     }?: returnUnknownError()
                 }
@@ -48,7 +55,12 @@ class AuthRepositoryImpl @Inject constructor(
     private fun returnUnknownError(): Resource<AuthToken> {
         return Resource.error(
             "Unknown error",
-            null
+            AuthToken(
+                errorResponse = StateResponse(
+                    "Unknown error",
+                    errorResponseType = ResponseType.Toast
+                )
+            )
         )
     }
 
