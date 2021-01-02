@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.rradzzio.sessionmanager.data.local.AppDatabase
 import com.rradzzio.sessionmanager.data.local.AppDatabase.Companion.DATABASE_NAME
 import com.rradzzio.sessionmanager.data.local.model.AccountPropertiesEntityMapper
+import com.rradzzio.sessionmanager.data.local.model.AuthTokenEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +21,11 @@ object DatabaseModule {
     @Provides
     fun provideAccountPropertiesEntityMapper(): AccountPropertiesEntityMapper
         = AccountPropertiesEntityMapper()
+
+    @Singleton
+    @Provides
+    fun provideAuthTokenEntityMapper(): AuthTokenEntityMapper
+            = AuthTokenEntityMapper()
 
     @Singleton
     @Provides

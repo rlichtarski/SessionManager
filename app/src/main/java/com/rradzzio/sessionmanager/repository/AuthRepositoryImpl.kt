@@ -1,5 +1,9 @@
 package com.rradzzio.sessionmanager.repository
 
+import com.rradzzio.sessionmanager.data.local.AccountPropertiesDao
+import com.rradzzio.sessionmanager.data.local.AuthTokenDao
+import com.rradzzio.sessionmanager.data.local.model.AccountPropertiesEntityMapper
+import com.rradzzio.sessionmanager.data.local.model.AuthTokenEntityMapper
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSource
 import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
 import com.rradzzio.sessionmanager.data.remote.requests.AuthRegistrationRequest
@@ -15,7 +19,11 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authTokenRemoteSource: AuthTokenRemoteSource,
-    private val authTokenDtoMapper: AuthTokenDtoMapper
+    private val authTokenDao: AuthTokenDao,
+    private val accountPropertiesDao: AccountPropertiesDao,
+    private val authTokenDtoMapper: AuthTokenDtoMapper,
+    private val authTokenEntityMapper: AuthTokenEntityMapper,
+    private val accountPropertiesEntityMapper: AccountPropertiesEntityMapper
 ) : AuthRepository {
 
     override suspend fun login(authLoginRequest: AuthLoginRequest): Flow<Resource<AuthToken>> {
