@@ -1,7 +1,7 @@
 package com.rradzzio.sessionmanager.di
 
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSource
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
+import com.rradzzio.sessionmanager.data.remote.model.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.repository.AuthRepository
 import com.rradzzio.sessionmanager.repository.AuthRepositoryImpl
 import dagger.Module

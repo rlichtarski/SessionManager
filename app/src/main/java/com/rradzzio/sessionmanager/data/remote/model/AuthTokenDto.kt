@@ -1,4 +1,4 @@
-package com.rradzzio.sessionmanager.data.remote.responses
+package com.rradzzio.sessionmanager.data.remote.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

@@ -3,7 +3,7 @@ package com.rradzzio.sessionmanager.di
 import com.rradzzio.sessionmanager.data.remote.AuthService
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSource
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSourceImpl
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
+import com.rradzzio.sessionmanager.data.remote.model.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.util.Constants
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -62,7 +62,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideLogginInterceptor(): HttpLoggingInterceptor {
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
     }

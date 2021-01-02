@@ -3,7 +3,7 @@ package com.rradzzio.sessionmanager.repository
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSource
 import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
 import com.rradzzio.sessionmanager.data.remote.requests.AuthRegistrationRequest
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDtoMapper
+import com.rradzzio.sessionmanager.data.remote.model.AuthTokenDtoMapper
 import com.rradzzio.sessionmanager.domain.models.AuthToken
 import com.rradzzio.sessionmanager.domain.models.ResponseType
 import com.rradzzio.sessionmanager.domain.models.StateResponse

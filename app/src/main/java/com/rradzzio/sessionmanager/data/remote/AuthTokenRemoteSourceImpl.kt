@@ -2,7 +2,7 @@ package com.rradzzio.sessionmanager.data.remote
 
 import com.rradzzio.sessionmanager.data.remote.requests.AuthLoginRequest
 import com.rradzzio.sessionmanager.data.remote.requests.AuthRegistrationRequest
-import com.rradzzio.sessionmanager.data.remote.responses.AuthTokenDto
+import com.rradzzio.sessionmanager.data.remote.model.AuthTokenDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.rradzzio.sessionmanager.data.remote.responses
+package com.rradzzio.sessionmanager.data.remote.model
 
 import com.rradzzio.sessionmanager.domain.models.AuthToken
 import com.rradzzio.sessionmanager.domain.util.DomainMapper
