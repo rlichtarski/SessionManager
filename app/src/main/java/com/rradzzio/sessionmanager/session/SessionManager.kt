@@ -37,7 +37,7 @@ class SessionManager @Inject constructor(
             try {
                 _cachedToken.value!!.pk?.let {
                     authTokenDao.nullifyToken(it)
-                }?: throw CancellationException("")
+                }?: throw CancellationException("Token Error. Logging out user.")
             } catch (e: CancellationException) {
                 Timber.e("logout: ${e.message}")
                 errorMessage = e.message
