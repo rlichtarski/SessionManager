@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AuthToken(
+    val pk: Int? = null,
     val token: String? = null,
     val error: String? = null,
     val errorResponse: StateResponse? = null

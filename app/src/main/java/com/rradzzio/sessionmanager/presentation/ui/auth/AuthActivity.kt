@@ -3,6 +3,7 @@ package com.rradzzio.sessionmanager.presentation.ui.auth
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -52,6 +53,9 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
 
                         Status.SUCCESS -> {
                             displayProgressBar(false)
+                            result.data?.let { authToken ->
+                                sessionManager.login(authToken)
+                            }
                             Timber.d("auth token: ${result.data!!.token}")
                         }
 
@@ -70,6 +74,12 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
                 }
             }
 
+        })
+
+        sessionManager.cachedToken.observe(this, { authToken ->
+            if(authToken?.token != null) {
+                Timber.d("NAVIGATING TO MAIN ACTIVITY")
+            }
         })
     }
 
