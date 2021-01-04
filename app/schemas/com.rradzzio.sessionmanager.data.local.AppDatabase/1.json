@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eda61e051a0707e3a2ffd8853765483e",
+    "identityHash": "e0c6caf3fbcd4dbeaf95e70ee87bffb4",
     "entities": [
       {
         "tableName": "auth_token",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`account_pk` INTEGER, `token` TEXT, PRIMARY KEY(`account_pk`), FOREIGN KEY(`account_pk`) REFERENCES `account_properties`(`pk`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`account_pk` INTEGER PRIMARY KEY AUTOINCREMENT, `token` TEXT, `email` TEXT)",
         "fields": [
           {
             "fieldPath": "account_pk",
@@ -15,41 +15,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "authToken",
+            "fieldPath": "token",
             "columnName": "token",
             "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "account_pk"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": [
-          {
-            "table": "account_properties",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "account_pk"
-            ],
-            "referencedColumns": [
-              "pk"
-            ]
-          }
-        ]
-      },
-      {
-        "tableName": "account_properties",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pk` INTEGER PRIMARY KEY AUTOINCREMENT, `email` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "pk",
-            "columnName": "pk",
-            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -61,7 +29,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "pk"
+            "account_pk"
           ],
           "autoGenerate": true
         },
@@ -72,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eda61e051a0707e3a2ffd8853765483e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e0c6caf3fbcd4dbeaf95e70ee87bffb4')"
     ]
   }
 }

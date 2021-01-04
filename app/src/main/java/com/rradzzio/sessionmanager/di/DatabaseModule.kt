@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.rradzzio.sessionmanager.data.local.AppDatabase
 import com.rradzzio.sessionmanager.data.local.AppDatabase.Companion.DATABASE_NAME
-import com.rradzzio.sessionmanager.data.local.model.AccountPropertiesEntityMapper
 import com.rradzzio.sessionmanager.data.local.model.AuthTokenEntityMapper
 import dagger.Module
 import dagger.Provides
@@ -16,11 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object DatabaseModule {
-
-    @Singleton
-    @Provides
-    fun provideAccountPropertiesEntityMapper(): AccountPropertiesEntityMapper
-        = AccountPropertiesEntityMapper()
 
     @Singleton
     @Provides
@@ -36,8 +30,5 @@ object DatabaseModule {
 
     @Provides
     fun provideAuthTokenDao(db: AppDatabase) = db.getAuthTokenDao()
-
-    @Provides
-    fun provideAccountPropertiesDao(db: AppDatabase) = db.getAccountPropertiesDao()
 
 }

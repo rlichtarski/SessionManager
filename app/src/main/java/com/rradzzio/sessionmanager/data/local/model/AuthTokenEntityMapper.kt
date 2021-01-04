@@ -8,14 +8,14 @@ class AuthTokenEntityMapper : DomainMapper<AuthTokenEntity, AuthToken> {
     override fun mapToDomainModel(model: AuthTokenEntity): AuthToken {
         return AuthToken(
             pk = model.account_pk,
-            token = model.authToken
+            token = model.token
         )
     }
 
     override fun mapFromDomainModel(domainModel: AuthToken): AuthTokenEntity {
         return AuthTokenEntity(
             account_pk = domainModel.pk,
-            authToken = domainModel.token
+            token = domainModel.token
         )
     }
 }

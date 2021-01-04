@@ -18,4 +18,10 @@ interface AuthTokenDao {
     @Query("SELECT * FROM auth_token WHERE account_pk = :pk")
     suspend fun searchByPk(pk: Int): AuthTokenEntity?
 
+    @Query("SELECT * FROM auth_token WHERE email = :email")
+    suspend fun searchByEmail(email: String): AuthTokenEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAndReplace(authTokenEntity: AuthTokenEntity): Long
+
 }
