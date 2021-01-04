@@ -29,7 +29,6 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun login(authLoginRequest: AuthLoginRequest): Flow<Resource<AuthToken>> {
-
         return authTokenRemoteSource.loginAuthToken(authLoginRequest)
             .map { response ->
                 if(response.isSuccessful && response.code() == 200) {
@@ -62,24 +61,20 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    private suspend fun saveAuthToken(authTokenDto: AuthTokenDto, email: String): Long =
-        authTokenDao.insert(
-            authTokenEntity = AuthTokenEntity(
-                token = authTokenDto.token,
-                email = email
-            )
-        )
-
     override suspend fun register(authRegistrationRequest: AuthRegistrationRequest): Flow<Resource<AuthToken>> {
         return authTokenRemoteSource.registerAuthToken(authRegistrationRequest)
             .map { response ->
                 if(response.isSuccessful && response.code() == 200) {
-                    response.body()?.let {
-                        Resource.success(
-                            authTokenDtoMapper.mapToDomainModel(
-                                it
+                    response.body()?.let { authTokenDto ->
+                        val result = saveAuthToken(authTokenDto, authRegistrationRequest.email)
+                        if(result < 0) {
+                            Timber.e("Couldn't save an auth token into db.")
+                        }
+                        authTokenDto.let {
+                            Resource.success(
+                                authTokenDtoMapper.mapToDomainModel(it)
                             )
-                        )
+                        }
                     }?: returnUnknownError()
                 } else {
                     response.errorBody()?.let { responseBody ->
@@ -97,6 +92,14 @@ class AuthRepositoryImpl @Inject constructor(
                 }
             }
     }
+
+    private suspend fun saveAuthToken(authTokenDto: AuthTokenDto, email: String): Long =
+        authTokenDao.insert(
+            authTokenEntity = AuthTokenEntity(
+                token = authTokenDto.token,
+                email = email
+            )
+        )
 
     private fun returnUnknownError(): Resource<AuthToken> {
         return Resource.error(
