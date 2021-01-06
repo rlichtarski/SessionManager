@@ -1,5 +1,6 @@
 package com.rradzzio.sessionmanager.presentation.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -15,6 +16,7 @@ import com.rradzzio.sessionmanager.domain.models.StateResponse
 import com.rradzzio.sessionmanager.presentation.ui.BaseActivity
 import com.rradzzio.sessionmanager.presentation.ui.displayErrorDialog
 import com.rradzzio.sessionmanager.presentation.ui.displayToast
+import com.rradzzio.sessionmanager.presentation.ui.main.MainActivity
 import com.rradzzio.sessionmanager.util.Status
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -79,8 +81,15 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
         sessionManager.cachedToken.observe(this, { authToken ->
             if(authToken?.token != null) {
                 Timber.d("NAVIGATING TO MAIN ACTIVITY")
+                navMainActivity()
             }
         })
+    }
+
+    private fun navMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun handleErrorResponse(response: StateResponse) {

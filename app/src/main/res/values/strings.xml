@@ -17,4 +17,5 @@
     <string name="text_ok">OK</string>
     <string name="text_error">Error</string>
     <string name="text_success">Success</string>
+    <string name="logout">LOGOUT</string>
 </resources>
