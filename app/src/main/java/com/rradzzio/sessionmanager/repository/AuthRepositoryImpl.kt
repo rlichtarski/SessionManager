@@ -1,6 +1,7 @@
 package com.rradzzio.sessionmanager.repository
 
 import com.rradzzio.sessionmanager.data.local.AuthTokenDao
+import com.rradzzio.sessionmanager.data.local.AutoAuthPrefsManager
 import com.rradzzio.sessionmanager.data.local.model.AuthTokenEntity
 import com.rradzzio.sessionmanager.data.local.model.AuthTokenEntityMapper
 import com.rradzzio.sessionmanager.data.remote.AuthTokenRemoteSource
@@ -12,40 +13,42 @@ import com.rradzzio.sessionmanager.domain.models.AuthToken
 import com.rradzzio.sessionmanager.domain.models.ResponseType
 import com.rradzzio.sessionmanager.domain.models.StateResponse
 import com.rradzzio.sessionmanager.util.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val authTokenRemoteSource: AuthTokenRemoteSource,
     private val authTokenDao: AuthTokenDao,
     private val authTokenDtoMapper: AuthTokenDtoMapper,
     private val authTokenEntityMapper: AuthTokenEntityMapper,
+    private val autoAuthPrefsManager: AutoAuthPrefsManager
 ) : AuthRepository {
 
     override suspend fun login(authLoginRequest: AuthLoginRequest): Flow<Resource<AuthToken>> {
         return authTokenRemoteSource.loginAuthToken(authLoginRequest)
             .map { response ->
-                if(response.isSuccessful && response.code() == 200) {
+                if (response.isSuccessful && response.code() == 200) {
                     response.body()?.let { authTokenDto ->
                         val result = saveAuthToken(authTokenDto, authLoginRequest.email)
-                        if(result < 0) {
+                        if (result < 0) {
                             Timber.e("Couldn't save an auth token into db.")
                         }
+                        saveAuthenticatedUserToDataStorePrefs(authLoginRequest.email)
                         authTokenDto.let {
                             Resource.success(
                                 authTokenDtoMapper.mapToDomainModel(it)
                             )
                         }
-                    }?: returnUnknownError()
+                    } ?: returnUnknownError()
                 } else {
                     response.errorBody()?.let { responseBody ->
-                        val errorMessage = JSONObject(responseBody.charStream().readText()).getString("error")
+                        val errorMessage =
+                            JSONObject(responseBody.charStream().readText()).getString("error")
                         Resource.error(
                             errorMessage,
                             AuthToken(
@@ -55,7 +58,7 @@ class AuthRepositoryImpl @Inject constructor(
                                 )
                             )
                         )
-                    }?: returnUnknownError()
+                    } ?: returnUnknownError()
                 }
             }
 
@@ -64,21 +67,23 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun register(authRegistrationRequest: AuthRegistrationRequest): Flow<Resource<AuthToken>> {
         return authTokenRemoteSource.registerAuthToken(authRegistrationRequest)
             .map { response ->
-                if(response.isSuccessful && response.code() == 200) {
+                if (response.isSuccessful && response.code() == 200) {
                     response.body()?.let { authTokenDto ->
                         val result = saveAuthToken(authTokenDto, authRegistrationRequest.email)
-                        if(result < 0) {
+                        if (result < 0) {
                             Timber.e("Couldn't save an auth token into db.")
                         }
+                        saveAuthenticatedUserToDataStorePrefs(authRegistrationRequest.email)
                         authTokenDto.let {
                             Resource.success(
                                 authTokenDtoMapper.mapToDomainModel(it)
                             )
                         }
-                    }?: returnUnknownError()
+                    } ?: returnUnknownError()
                 } else {
                     response.errorBody()?.let { responseBody ->
-                        val errorMessage = JSONObject(responseBody.charStream().readText()).getString("error")
+                        val errorMessage =
+                            JSONObject(responseBody.charStream().readText()).getString("error")
                         Resource.error(
                             errorMessage,
                             AuthToken(
@@ -88,9 +93,15 @@ class AuthRepositoryImpl @Inject constructor(
                                 )
                             )
                         )
-                    }?: returnUnknownError()
+                    } ?: returnUnknownError()
                 }
             }
+    }
+
+    private suspend fun saveAuthenticatedUserToDataStorePrefs(email: String) {
+        autoAuthPrefsManager.saveAuthenticatedUserToDataStore(email)
+
+        Timber.d("EMAIL IN DATA_STORE: ${autoAuthPrefsManager.readPreviousAuthUserEmail()}")
     }
 
     private suspend fun saveAuthToken(authTokenDto: AuthTokenDto, email: String): Long =
