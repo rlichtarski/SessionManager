@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
+class AuthActivity : BaseActivity() {
 
     private lateinit var navController: NavController
 
@@ -124,11 +124,4 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
         binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
-    override fun onDestinationChanged(
-        controller: NavController,
-        destination: NavDestination,
-        arguments: Bundle?
-    ) {
-        //not implemented yet
-    }
 }
