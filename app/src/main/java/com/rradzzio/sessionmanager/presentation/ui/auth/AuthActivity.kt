@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -40,6 +39,7 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
         navController = navHostFragment.findNavController()
 
         subscribeObservers()
+        checkPreviousAuthUser()
     }
 
     private fun subscribeObservers() {
@@ -90,6 +90,10 @@ class AuthActivity : BaseActivity(), NavController.OnDestinationChangedListener{
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun checkPreviousAuthUser() {
+        authViewModel.checkPreviousAuthUser()
     }
 
     private fun handleErrorResponse(response: StateResponse) {

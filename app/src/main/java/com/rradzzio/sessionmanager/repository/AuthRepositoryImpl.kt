@@ -98,9 +98,38 @@ class AuthRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun checkPreviousAuthUser(): Flow<Resource<AuthToken>> {
+
+        return autoAuthPrefsManager.preferencesFlow
+            .map { email ->
+
+                if(email.isBlank()){
+                    Timber.d("checkPreviousAuthUser: No previously authenticated user found.")
+                    returnNoAuthTokenFound()
+                }
+
+                email.let {
+                    authTokenDao.searchByEmail(email)?.let { authTokenEntity ->
+                        authTokenEntity.account_pk?.let {
+                            if (it > -1) {
+                                authTokenDao.searchByPk(it)?.let { authToken ->
+                                    if (authToken.token != null) {
+                                        Resource.success(
+                                            authTokenEntityMapper.mapToDomainModel(authToken)
+                                        )
+                                    } else returnNoAuthTokenFound()
+                                }
+                            } else returnNoAuthTokenFound()
+                        }
+                    }
+                } ?: returnNoAuthTokenFound()
+
+            }
+
+    }
+
     private suspend fun saveAuthenticatedUserToDataStorePrefs(email: String) {
         autoAuthPrefsManager.saveAuthenticatedUserToDataStore(email)
-
         Timber.d("EMAIL IN DATA_STORE: ${autoAuthPrefsManager.readPreviousAuthUserEmail()}")
     }
 
@@ -111,6 +140,18 @@ class AuthRepositoryImpl @Inject constructor(
                 email = email
             )
         )
+
+    private fun returnNoAuthTokenFound(): Resource<AuthToken> {
+        return Resource.error(
+            "No Auth Token found",
+            AuthToken(
+                errorResponse = StateResponse(
+                    "No Auth Token found",
+                    errorResponseType = ResponseType.None
+                )
+            )
+        )
+    }
 
     private fun returnUnknownError(): Resource<AuthToken> {
         return Resource.error(

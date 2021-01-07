@@ -12,4 +12,6 @@ interface AuthRepository {
 
     suspend fun register(authRegistrationRequest: AuthRegistrationRequest) : Flow<Resource<AuthToken>>
 
+    suspend fun checkPreviousAuthUser() : Flow<Resource<AuthToken>>
+
 }

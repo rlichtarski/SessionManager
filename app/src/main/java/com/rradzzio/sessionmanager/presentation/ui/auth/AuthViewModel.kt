@@ -66,6 +66,15 @@ class AuthViewModel @ViewModelInject constructor(
 
     }
 
+    fun checkPreviousAuthUser() {
+        viewModelScope.launch {
+            _loginResult.postValue(Event(Resource.loading(null)))
+            authRepository.checkPreviousAuthUser().collect {
+                _loginResult.postValue(Event(it))
+            }
+        }
+    }
+
     fun setLoginFields(email: String?, password: String?) {
         _loginCredentials.value = LoginCredentials(email = email, password = password)
     }
